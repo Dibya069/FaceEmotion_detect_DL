@@ -1,0 +1,12 @@
+flask==2.0.1
+pandas
+numpy
+kaggle
+scikit-learn
+keras
+opencv-python
+matplotlib
+tensorflow
+ultralytics
+
+- e.
