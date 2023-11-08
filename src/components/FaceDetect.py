@@ -34,19 +34,21 @@ class FacetDetect:
 
             logging.info("crop the boxed face")
             for(x,y,w,h) in face_box:
-                cv2.rectangle(img, (x, y), (x + w, y + h + 10), (0, 255, 0), 2)
+                cv2.rectangle(img, (x,y), (x+w, y+h+10), (0,255,0), 2)
+                #crop the boxed face
 
-                # Crop the boxed face
-                gray_frame = gray_image[y:y + h, x:x + w]
-
-                # Resize the ROI to 48x48 pixels
-                resized_gray_img = cv2.resize(gray_frame, (48, 48))
+                gray_frame = gray_image[y:y+h, x:x+w]         # Extract the region of interest (ROI), which is the grayscale face area.
+                resized_gray_img = cv2.resize(gray_frame, (48,48)) #Resize the ROI to 48x48 pixels.
                 cropped_img = np.array(resized_gray_img)
-                cropped_img = cropped_img.astype('uint8')
-                cropped_img = ((cropped_img / 255.0) - 0.5) * 2.0  # Normalize the pixel values to be between -1 and 1.
-                cropped_img = np.expand_dims(cropped_img, 0)  # Expand the dimensions to create a batch of size 1
-                cropped_img = np.expand_dims(cropped_img, -1)
 
+                cropped_img = image.img_to_array(cropped_img)
+                cropped_img = cv2.resize(cropped_img.astype('uint8'), (64,64))
+                cropped_img = cropped_img.astype('float32')   
+
+                cropped_img = ((cropped_img / 255.0) - 0.5) * 2.0 # Normalize the pixel values to be between -1 and 1. 
+                cropped_img = np.expand_dims(cropped_img, 0) # Expand the dimensions to create a batch of size 1 
+                cropped_img = np.expand_dims(cropped_img,-1)
+                
                 cropped.append(cropped_img)
                 xs.append(x)
                 ys.append(y)
