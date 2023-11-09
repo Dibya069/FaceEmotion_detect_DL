@@ -18,7 +18,7 @@ class FacetDetect:
     def detect_face(self, pic):
         try:
             pic = cv2.imread(pic)
-            img=pic.copy()
+            img = pic.copy()
             img = cv2.resize(img, (600,500))
             #convert image into gray scale as opencv face detector expects gray images
             logging.info("convert image into gray scale as opencv face detector expects gray images")
@@ -38,17 +38,7 @@ class FacetDetect:
                 #crop the boxed face
 
                 gray_frame = gray_image[y:y+h, x:x+w]         # Extract the region of interest (ROI), which is the grayscale face area.
-                resized_gray_img = cv2.resize(gray_frame, (48,48)) #Resize the ROI to 48x48 pixels.
-                cropped_img = np.array(resized_gray_img)
-
-                cropped_img = image.img_to_array(cropped_img)
-                cropped_img = cv2.resize(cropped_img.astype('uint8'), (64,64))
-                cropped_img = cropped_img.astype('float32')   
-
-                cropped_img = ((cropped_img / 255.0) - 0.5) * 2.0 # Normalize the pixel values to be between -1 and 1. 
-                cropped_img = np.expand_dims(cropped_img, 0) # Expand the dimensions to create a batch of size 1 
-                cropped_img = np.expand_dims(cropped_img,-1)
-                
+                cropped_img = np.expand_dims(np.expand_dims(cv2.resize(gray_frame, (48, 48)), -1), 0)
                 cropped.append(cropped_img)
                 xs.append(x)
                 ys.append(y)

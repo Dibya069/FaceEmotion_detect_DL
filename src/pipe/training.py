@@ -12,7 +12,7 @@ from src.components.ModelCreation import ModelCreate
 from src.components.FaceDetect import FacetDetect
 
 if __name__ == "__main__":
-    """## Data Ingestion
+    ## Data Ingestion
     obj = dataset_provider()
     train_face, test_face, train_emotion, test_emotion = obj.dataset_initializer()
     print(train_face, test_face, train_emotion, test_emotion)
@@ -22,14 +22,15 @@ if __name__ == "__main__":
     obj1 = ModelCreate()
     model_str = obj1.model_sum()
     print(model_str)
-    logging.info("Model Creation step complete")"""
+    logging.info("Model Creation step complete")
 
     ## Face Detection
     obj2 = FacetDetect()
     xs, ys, face, cropped = obj2.detect_face(FaceDetec.demo_img)
     
-    rgb_face = plt.imshow(cv2.cvtColor(face, cv2.COLOR_BGR2RGB))
-    plt.imsave(FaceDetec.demo_path, rgb_face)
+    plt.imshow(cv2.cvtColor(face, cv2.COLOR_BGR2RGB))
+    plt.show()
 
+    cv2.imwrite(FaceDetec.demo_path, face)
     print(FaceDetec.demo_path)
     logging.info("Face Detection step complete")
