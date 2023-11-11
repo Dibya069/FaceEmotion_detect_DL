@@ -5,13 +5,15 @@ import matplotlib.pyplot as plt
 import cv2
 
 #from src.exception import CustomException
-from src.utils import FaceDetec
+from src.utils import FaceDetec, ModelLoad
 from src.logger import logging
 from src.components.data_ingestion import dataset_provider
 from src.components.ModelCreation import ModelCreate
 from src.components.FaceDetect import FacetDetect
+from src.components.ModelLoad import LoadModel
 
 if __name__ == "__main__":
+    """
     ## Data Ingestion
     obj = dataset_provider()
     train_face, test_face, train_emotion, test_emotion = obj.dataset_initializer()
@@ -24,7 +26,14 @@ if __name__ == "__main__":
     print(model_str)
     logging.info("Model Creation step complete")
 
-    ## Face Detection
+    ## Model Load
+    obj3 = LoadModel()
+    loaded_model = obj3.model_initiate()
+    loaded_model.load_weights(ModelLoad.orgM)  # load weights into new model
+    """
+
+    ## Face Detection for Image
+    """ 
     obj2 = FacetDetect()
     xs, ys, face, cropped = obj2.detect_face(FaceDetec.demo_img)
     
@@ -33,4 +42,8 @@ if __name__ == "__main__":
 
     cv2.imwrite(FaceDetec.demo_path, face)
     print(FaceDetec.demo_path)
-    logging.info("Face Detection step complete")
+    logging.info("Face Detection step complete")"""
+
+    ## Face Detection for Video
+    obj4 = FacetDetect()
+    obj4.web_cam(0)

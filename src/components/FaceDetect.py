@@ -4,11 +4,19 @@ import cv2
 import pandas as pd
 import numpy as np
 import os, sys
+import matplotlib.pyplot as plt
 
 from dataclasses import dataclass
 from src.logger import logging
 from src.exception import CustomException
-from src.utils import FaceDetec
+from src.utils import FaceDetec, ModelLoad
+from src.components.ModelLoad import LoadModel
+
+
+## Model Load
+obj3 = LoadModel()
+loaded_model = obj3.model_initiate()
+loaded_model.load_weights(ModelLoad.orgM)  # load weights into new model
 
 @dataclass
 class FacetDetect:
@@ -46,6 +54,81 @@ class FacetDetect:
             logging.info("All required things created successfuly")
 
             return xs, ys, img, cropped
+        
+        except Exception as e:
+            raise CustomException(e, sys)
+        
+
+    def process_detected_faces(self, face_box, frame):
+        xs = []
+        ys = []
+        cropped = []
+
+        for (x, y, w, h) in face_box:
+
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            gray_face = gray_frame[y:y+h, x:x+w]
+
+            # Resize the face to a standard size (e.g., 48x48 pixels)
+            resized_face = cv2.resize(gray_face, (64, 64))
+            # Normalize pixel values to be in the range [0, 1]
+            normalized_face = resized_face / 255.0
+            # Add a channel dimension to the image (assuming your model expects shape (64, 64, 1))
+            normalized_face = np.expand_dims(normalized_face, axis=-1)
+            cropped.append(normalized_face)
+
+            xs.append(x)
+            ys.append(y)
+
+        return xs, ys, cropped
+
+        
+
+    def web_cam(self, source):
+        try:
+            cap = cv2.VideoCapture(source)  # 0 for the default webcam
+
+            while True:
+                # Capture frame-by-frame
+                ret, frame = cap.read()
+
+                # Check if the frame was captured successfully
+                if not ret:
+                    print("Failed to capture frame from the webcam.")
+                    break
+                
+                print("Frame shape:", frame.shape)
+                # Convert frame to grayscale for face detection
+                gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                print("Grey_Frame shape:", gray_frame.shape)
+                
+                # Use haar classifier to detect faces
+                face_box = self.face_detec.cascade.detectMultiScale(gray_frame, scaleFactor=1.3, minNeighbors=5)
+                xs, ys, cropped = self.process_detected_faces(face_box, frame)
+
+                # Draw rectangles around detected faces
+                for (x, y, w, h) in face_box:
+                    cv2.rectangle(frame, (x, y), (x+w, y+h+10), (0, 255, 0), 2)
+
+                # Display the resulting frame
+                #cv2.imshow('Webcam Face Detection', frame)
+
+                j=0
+                for i in cropped:
+                    emotion_pred = int(np.argmax(loaded_model.predict(i)))
+                    cv2.putText (frame, ModelLoad.emolib[emotion_pred], (xs[j], ys[j]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                    j+=1
+
+                cv2.imshow('Webcam Face Detection', frame)
+                #plt.imshow(cv2.cvtColor(face_box, cv2.COLOR_BGR2RGB))
+
+                # Check for user input to exit the loop
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+
+            # Release the webcam and close all windows when finished
+            cap.release()
+            cv2.destroyAllWindows()
         
         except Exception as e:
             raise CustomException(e, sys)
