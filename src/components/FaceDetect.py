@@ -69,7 +69,6 @@ class FacetDetect:
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             gray_face = gray_frame[y:y+h, x:x+w]
 
-            # Resize the face to a standard size (e.g., 48x48 pixels)
             resized_face = cv2.resize(gray_face, (64, 64))
             # Normalize pixel values to be in the range [0, 1]
             normalized_face = resized_face / 255.0
@@ -89,6 +88,10 @@ class FacetDetect:
         try:
             cap = cv2.VideoCapture(source)  # 0 for the default webcam
 
+            fourcc = cv2.VideoWriter_fourcc(*'XVID')  # Define the codec
+            out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))  # Create the video writer object
+
+
             while True:
                 # Capture frame-by-frame
                 ret, frame = cap.read()
@@ -96,10 +99,9 @@ class FacetDetect:
                 # Check if the frame was captured successfully
                 if not ret:
                     print("Failed to capture frame from the webcam.")
-                    break
-                
+                    break                
                 print("Frame shape:", frame.shape)
-                # Convert frame to grayscale for face detection
+
                 gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 print("Grey_Frame shape:", gray_frame.shape)
                 
@@ -111,23 +113,22 @@ class FacetDetect:
                 for (x, y, w, h) in face_box:
                     cv2.rectangle(frame, (x, y), (x+w, y+h+10), (0, 255, 0), 2)
 
-                # Display the resulting frame
-                #cv2.imshow('Webcam Face Detection', frame)
+                out.write(frame)
 
                 j=0
                 for i in cropped:
                     emotion_pred = int(np.argmax(loaded_model.predict(i)))
                     cv2.putText (frame, ModelLoad.emolib[emotion_pred], (xs[j], ys[j]), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+                    out.write(frame)
                     j+=1
 
                 cv2.imshow('Webcam Face Detection', frame)
-                #plt.imshow(cv2.cvtColor(face_box, cv2.COLOR_BGR2RGB))
 
-                # Check for user input to exit the loop
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
             # Release the webcam and close all windows when finished
+            out.release()
             cap.release()
             cv2.destroyAllWindows()
         
