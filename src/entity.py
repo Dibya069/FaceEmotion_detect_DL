@@ -22,6 +22,7 @@ Face Detection related constant
 """
 DEMO_IMG: str = "C:/Users/mohan/Downloads/Data_Science/008.Deep_Learning/00. Projects/FaceEmotion/FaceEmotionDetect/tom.jpg"
 DEMO_PATH: str = "C:/Users/mohan/Downloads/Data_Science/008.Deep_Learning/00. Projects/FaceEmotion/FaceEmotionDetect/dataset/tom.jpg"
+WEB_PATH: str = "C:/Users/mohan/Downloads/Data_Science/008.Deep_Learning/00. Projects/FaceEmotion/FaceEmotionDetect/dataset/tom.mp4"
 
 
 """

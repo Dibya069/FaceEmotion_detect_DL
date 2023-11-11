@@ -46,4 +46,4 @@ if __name__ == "__main__":
 
     ## Face Detection for Video
     obj4 = FacetDetect()
-    obj4.web_cam(0)
+    obj4.web_cam(1)

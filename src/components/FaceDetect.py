@@ -75,6 +75,7 @@ class FacetDetect:
             normalized_face = resized_face / 255.0
             # Add a channel dimension to the image (assuming your model expects shape (64, 64, 1))
             normalized_face = np.expand_dims(normalized_face, axis=-1)
+            normalized_face = normalized_face.reshape((1, 64, 64, 1))
             cropped.append(normalized_face)
 
             xs.append(x)
