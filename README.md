@@ -9,3 +9,6 @@
 #### Face Detection use:
 - Using `OpenCV` model to detect the face
 - Using `Region Of Interest (ROI)` method to store the detected faces
+
+* Used Google collab for trained the model
+* use code `python -m src.pipe.training` for execute the program

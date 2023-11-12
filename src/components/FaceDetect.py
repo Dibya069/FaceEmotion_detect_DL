@@ -46,7 +46,7 @@ class FacetDetect:
                 #crop the boxed face
 
                 gray_frame = gray_image[y:y+h, x:x+w]         # Extract the region of interest (ROI), which is the grayscale face area.
-                cropped_img = np.expand_dims(np.expand_dims(cv2.resize(gray_frame, (48, 48)), -1), 0)
+                cropped_img = np.expand_dims(np.expand_dims(cv2.resize(gray_frame, (64, 64)), -1), 0)
                 cropped.append(cropped_img)
                 xs.append(x)
                 ys.append(y)
