@@ -13,4 +13,4 @@
 * Used Google collab for trained the model
 * use code `python -m src.pipe.training` for execute the program
 
-[](https://www.linkedin.com/posts/dibyajyoti-mohanty-4a72501b2_happydiwali-datascience-computervision-activity-7129362816502759424-oJdF?utm_source=share&utm_medium=member_desktop)
+[watch video](https://www.linkedin.com/posts/dibyajyoti-mohanty-4a72501b2_happydiwali-datascience-computervision-activity-7129362816502759424-oJdF?utm_source=share&utm_medium=member_desktop)
