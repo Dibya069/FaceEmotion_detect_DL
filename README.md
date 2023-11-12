@@ -13,4 +13,4 @@
 * Used Google collab for trained the model
 * use code `python -m src.pipe.training` for execute the program
 
-[watch video](https://github.com/Dibya069/FaceEmotion/raw/main/output.avi)
+[](https://github.com/Dibya069/FaceEmotion/blob/main/output.avi)
